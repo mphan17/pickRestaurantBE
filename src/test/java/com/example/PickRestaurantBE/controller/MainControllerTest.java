@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -33,18 +34,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class MainControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private MainController controller;
-
-    @Mock
+    @MockBean
     private MainService service;
 
     @Test
     public void shouldReturnDefaultMessage() throws Exception {
-        when(service.getMainService()).thenReturn("hello");
+       when(service.getMainService()).thenReturn("Greetings from Spring Boot!");
 
         this.mockMvc.perform(get("/greeting"))
                 .andDo(print())
