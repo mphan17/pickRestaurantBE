@@ -1,12 +1,16 @@
 package com.example.PickRestaurantBE.controller;
 
 import com.example.PickRestaurantBE.PickRestaurantBeApplication;
+import com.example.PickRestaurantBE.service.MainService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -26,15 +30,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(MainController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class MainControllerTest {
-
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private MainController controller;
+
+    @Mock
+    private MainService service;
+
     @Test
     public void shouldReturnDefaultMessage() throws Exception {
-        this.mockMvc.perform(get("/greeting")).andDo(print()).andExpect(status().isOk())
+        when(service.getMainService()).thenReturn("hello");
+
+        this.mockMvc.perform(get("/greeting"))
+                .andDo(print())
+                .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Greetings from Spring Boot!")));
     }
 }
